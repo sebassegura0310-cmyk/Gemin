@@ -1,1 +1,226 @@
 
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oportunidades para ti</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #17202b;
+    }
+
+    header {
+      height: 110px;
+      padding: 0 6%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+    }
+
+    .logo {
+      color: #21894e;
+      font-size: clamp(26px, 5vw, 48px);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .menu-button {
+      border: 0;
+      background: none;
+      font-size: 38px;
+      cursor: pointer;
+    }
+
+    nav {
+      display: none;
+      position: absolute;
+      top: 90px;
+      right: 6%;
+      padding: 18px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px #0002;
+      z-index: 2;
+    }
+
+    nav.abierto { display: grid; gap: 14px; }
+
+    nav a {
+      color: #21894e;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .hero {
+      min-height: calc(100vh - 110px);
+      padding: 10vh 6%;
+      background: linear-gradient(120deg, #eaf8f0, #fff);
+    }
+
+    .etiqueta {
+      display: inline-block;
+      padding: 18px 26px;
+      border-radius: 40px;
+      background: #ddf5e8;
+      color: #21894e;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    h1 {
+      max-width: 850px;
+      margin: 55px 0 28px;
+      font-size: clamp(48px, 10vw, 100px);
+      line-height: 1.05;
+    }
+
+    h1 span { color: #198d4d; }
+
+    .descripcion {
+      max-width: 800px;
+      color: #687482;
+      font-size: clamp(20px, 3vw, 32px);
+      line-height: 1.6;
+    }
+
+    .botones {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 45px;
+    }
+
+    .boton {
+      display: inline-block;
+      padding: 22px 30px;
+      border: 3px solid #21894e;
+      border-radius: 20px;
+      color: #21894e;
+      background: white;
+      font-size: 22px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: transform .2s, background .2s;
+    }
+
+    .boton:hover { transform: translateY(-3px); }
+
+    .boton.principal {
+      color: white;
+      background: #198d4d;
+    }
+
+    section.contenido {
+      padding: 70px 6%;
+      background: #f5f7fa;
+    }
+
+    .tarjeta {
+      max-width: 700px;
+      margin: 20px 0;
+      padding: 24px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px #0000000d;
+    }
+
+    .chat {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      width: 68px;
+      height: 68px;
+      border: 0;
+      border-radius: 50%;
+      background: #20cc70;
+      font-size: 32px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px #0003;
+    }
+
+    @media (max-width: 600px) {
+      header { height: 90px; }
+      .hero { min-height: calc(100vh - 90px); }
+      .botones { flex-direction: column; align-items: flex-start; }
+      .boton { font-size: 19px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a class="logo" href="#">OPORTUNIDADES</a>
+    <button class="menu-button" id="menuButton" aria-label="Abrir menú">☰</button>
+
+    <nav id="menu">
+      <a href="#empleos">Empleos</a>
+      <a href="#prestamos">Préstamos</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div class="etiqueta">✨ OPORTUNIDADES PARA TI</div>
+
+      <h1>Encuentra nuevas<br /><span>oportunidades</span></h1>
+
+      <p class="descripcion">
+        Conoce nuestras oportunidades de empleo y consulta las opciones
+        de préstamo disponibles.
+      </p>
+
+      <div class="botones">
+        <a class="boton principal" href="#empleos">💼 Ver empleos</a>
+        <a class="boton" href="#prestamos">💰 Ver préstamos</a>
+      </div>
+    </div>
+
+    <section class="contenido" id="empleos">
+      <h2>💼 Oportunidades de empleo</h2>
+      <div class="tarjeta">
+        <h3>Asistente administrativo</h3>
+        <p>Revisa aquí los detalles y requisitos de la oportunidad.</p>
+        <a href="mailto:contacto@tusitio.com">Solicitar información</a>
+      </div>
+    </section>
+
+    <section class="contenido" id="prestamos">
+      <h2>💰 Opciones de préstamo</h2>
+      <div class="tarjeta">
+        <h3>Consulta las opciones disponibles</h3>
+        <p>Escríbenos para recibir más información.</p>
+        <a href="mailto:contacto@tusitio.com">Consultar</a>
+      </div>
+    </section>
+  </main>
+
+  <button class="chat" id="chatButton" aria-label="Abrir contacto">💬</button>
+
+  <script>
+    const menu = document.getElementById("menu");
+
+    document.getElementById("menuButton").addEventListener("click", () => {
+      menu.classList.toggle("abierto");
+    });
+
+    menu.querySelectorAll("a").forEach((enlace) => {
+      enlace.addEventListener("click", () => menu.classList.remove("abierto"));
+    });
+
+    document.getElementById("chatButton").addEventListener("click", () => {
+      window.location.href = "mailto:contacto@tusitio.com";
+    });
+  </script>
+</body>
+</html>
+```
