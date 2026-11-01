@@ -12,11 +12,11 @@
       100% { transform: rotate(360deg); }
     }
     .spinner {
-      border: 4px solid rgba(255, 255, 255, 0.3);
+      border: 4px solid rgba(59, 130, 246, 0.2);
       border-radius: 50%;
       border-top: 4px solid #2563eb;
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
       animation: spin 1s linear infinite;
     }
   </style>
@@ -117,7 +117,7 @@
         <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
           <i class="fa-regular fa-clock text-xl text-blue-600 mb-1"></i>
           <h3 class="font-bold text-sm text-gray-900">Horario Flexible</h3>
-          <p class="text-xs text-gray-500 mt-1">Tú decides cuándo trabajar. Organiza tu tiempo como mejor te convenga en nuestro flujo.</p>
+          <p class="text-xs text-gray-500 mt-1">Tú decides cuándo trabajar. Organiza tu tiempo como mejor te convenga.</p>
         </div>
 
         <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
@@ -135,35 +135,35 @@
         <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
           <i class="fa-solid fa-boxes-packing text-xl text-blue-600 mb-1"></i>
           <h3 class="font-bold text-sm text-gray-900">Variedad de Productos</h3>
-          <p class="text-xs text-gray-500 mt-1">Trabaja con diferentes artículos: cosméticos, juguetes, accesorios de cocina y más.</p>
+          <p class="text-xs text-gray-500 mt-1">Trabaja con diferentes artículos: cosméticos, juguetes, accesorios y más.</p>
         </div>
       </div>
     </div>
 
-    <!-- CUESTIONARIO DINÁMICO MULTI-PASO -->
+    <!-- CUESTIONARIO DINÁMICO MULTI-PASO (Oculto al inicio) -->
     <div id="dynamic-flow" class="hidden bg-white rounded-3xl p-6 shadow-2xl text-center space-y-5 transition-all duration-300">
       
-      <!-- PANTALLA DE CARGA -->
-      <div id="flow-loading" class="hidden flex-col items-center justify-center py-10 space-y-4">
+      <!-- PANTALLA DE CARGA GLOBAL -->
+      <div id="flow-loading" class="hidden flex-col items-center justify-center py-12 space-y-4">
         <div class="spinner"></div>
-        <p class="text-sm font-semibold text-gray-600">Procesando información...</p>
+        <p class="text-sm font-bold text-blue-900 animate-pulse">Guardando respuesta y cargando siguiente paso...</p>
       </div>
 
-      <!-- PASO 1: DISCAPACIDAD -->
-      <div id="step-1" class="space-y-4">
+      <!-- PASO 1: DISCAPACIDAD[span_3](start_span)[span_3](end_span) -->
+      <div id="step-1" class="step-content space-y-4">
         <div class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto text-2xl shadow-lg">
           <i class="fa-solid fa-phone"></i>
         </div>
         <h2 class="text-xl font-bold text-blue-950">Una pregunta importante</h2>
         <p class="text-xs text-gray-600 leading-relaxed">¿Tienes alguna discapacidad física de la que debamos enterarnos?</p>
         <div class="grid grid-cols-2 gap-3 pt-2">
-          <button onclick="nextStep(2)" class="w-full bg-blue-50 text-blue-700 font-bold py-3.5 rounded-xl border border-blue-100 hover:bg-blue-100 transition">No</button>
-          <button onclick="nextStep(2)" class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition">Sí</button>
+          <button onclick="nextStep(2)" class="w-full bg-blue-50 text-blue-700 font-bold py-3.5 rounded-xl border border-blue-100 hover:bg-blue-100 transition active:scale-95">No</button>
+          <button onclick="nextStep(2)" class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition active:scale-95">Sí</button>
         </div>
       </div>
 
-      <!-- PASO 2: ENTREVISTA TELEFÓNICA -->
-      <div id="step-2" class="hidden space-y-4">
+      <!-- PASO 2: ENTREVISTA TELEFÓNICA[span_4](start_span)[span_4](end_span) -->
+      <div id="step-2" class="step-content hidden space-y-4">
         <div class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto text-2xl shadow-lg">
           <i class="fa-solid fa-calendar-days"></i>
         </div>
@@ -182,26 +182,26 @@
           </div>
         </div>
         
-        <button onclick="nextStep(3)" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition">
+        <button onclick="nextStep(3)" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition active:scale-95">
           Enviar &rarr;
         </button>
       </div>
 
-      <!-- PASO 3: CUENTA BANCARIA -->
-      <div id="step-3" class="hidden space-y-4">
+      <!-- PASO 3: CUENTA BANCARIA[span_5](start_span)[span_5](end_span) -->
+      <div id="step-3" class="step-content hidden space-y-4">
         <div class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto text-2xl shadow-lg">
           <i class="fa-solid fa-credit-card"></i>
         </div>
         <h2 class="text-xl font-bold text-blue-950">Cuenta bancaria</h2>
         <p class="text-xs text-gray-600">¿Tienes cuenta de banco Santander LikeU?</p>
         <div class="grid grid-cols-2 gap-3 pt-2">
-          <button onclick="nextStep(4)" class="w-full bg-blue-50 text-blue-700 font-bold py-3.5 rounded-xl border border-blue-100 hover:bg-blue-100 transition">No</button>
-          <button onclick="nextStep(4)" class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition">Sí</button>
+          <button onclick="nextStep(4)" class="w-full bg-blue-50 text-blue-700 font-bold py-3.5 rounded-xl border border-blue-100 hover:bg-blue-100 transition active:scale-95">No</button>
+          <button onclick="nextStep(4)" class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition active:scale-95">Sí</button>
         </div>
       </div>
 
       <!-- PASO 4: ÉXITO FINAL -->
-      <div id="step-4" class="hidden space-y-4 py-4">
+      <div id="step-4" class="step-content hidden space-y-4 py-4">
         <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-4xl shadow-lg">
           <i class="fa-solid fa-circle-check"></i>
         </div>
@@ -239,4 +239,70 @@
           <input type="text" required placeholder="Ej. Ciudad de México" class="w-full p-3 text-xs border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
         </div>
 
-        <button type="submit" class="w-
+        <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-orange-500/30 transition mt-2">
+          Comenzar Postulación
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-blue-950 text-white py-6 text-center text-xs mt-auto">
+    <div class="flex items-center justify-center space-x-2 mb-2">
+      <div class="w-6 h-6 bg-white text-blue-950 rounded-full flex items-center justify-center text-xs font-bold">
+        <i class="fa-solid fa-cube"></i>
+      </div>
+      <span class="font-bold text-base">SurtidoraMX</span>
+    </div>
+    <p class="text-gray-400">&copy; 2026 SurtidoraMX. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- SCRIPT DE CONTROL FUNCIONAL -->
+  <script>
+    function openRegisterModal() {
+      document.getElementById('register-modal').classList.remove('hidden');
+    }
+
+    function closeRegisterModal() {
+      document.getElementById('register-modal').classList.add('hidden');
+    }
+
+    function handleInitialSubmit(e) {
+      e.preventDefault();
+      closeRegisterModal();
+      
+      const flow = document.getElementById('dynamic-flow');
+      flow.classList.remove('hidden');
+      
+      // Ocultar todos los pasos y mostrar el paso 1
+      document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById('step-1').classList.remove('hidden');
+      
+      flow.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function nextStep(targetStep) {
+      const loading = document.getElementById('flow-loading');
+      
+      // Ocultar todas las tarjetas de pasos activas
+      document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+      
+      // Mostrar la animación de carga
+      loading.classList.remove('hidden');
+      loading.classList.add('flex');
+
+      // Esperar 1.2 segundos para simular procesamiento fluido con animación
+      setTimeout(() => {
+        loading.classList.remove('flex');
+        loading.classList.add('hidden');
+        
+        // Mostrar el siguiente paso correspondiente
+        const nextElement = document.getElementById(`step-${targetStep}`);
+        if(nextElement) {
+          nextElement.classList.remove('hidden');
+        }
+      }, 1200);
+    }
+  </script>
+</body>
+</html>
