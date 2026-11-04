@@ -1,198 +1,159 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Solicitud de Créditos</title>
-  <!-- Fuente Google Fonts (Inter) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <style>
-    :root {
-      --primary-purple: #8b5cf6;
-      --primary-hover: #7c3aed;
-      --accent-glow: rgba(139, 92, 246, 0.4);
-      --bg-gradient-start: #0f0a1e;
-      --bg-gradient-end: #2e1065;
-      --card-bg: rgba(255, 255, 255, 0.96);
-      --text-dark: #1e1b4b;
-      --text-muted: #6b7280;
-    }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#22143f" />
+  <title>Solicita tu crédito</title>
 
+  <style>
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
     }
 
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
+      margin: 0;
+      padding: 40px 20px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, #a855f7 0, transparent 30%),
+        radial-gradient(circle at 90% 90%, #6d28d9 0, transparent 35%),
+        linear-gradient(135deg, #17112e, #3b1c68 55%, #241044);
     }
 
-    .container {
-      width: 100%;
-      max-width: 440px;
-      background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      border-radius: 24px;
-      padding: 40px 28px;
-      box-shadow: 0 20px 30px -5px rgba(0, 0, 0, 0.4), 0 10px 15px -5px rgba(124, 58, 237, 0.2);
+    .card {
+      width: min(100%, 560px);
+      padding: 42px 30px 28px;
       text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.09);
+      box-shadow: 0 24px 80px rgba(12, 5, 27, 0.4);
+      backdrop-filter: blur(16px);
+      animation: aparecer 700ms ease both;
     }
 
-    .icon-wrapper {
-      width: 88px;
-      height: 88px;
-      background: #f5f3ff;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    .logo {
+      width: 112px;
+      height: 112px;
       margin: 0 auto 24px;
-      box-shadow: 0 4px 12px var(--accent-glow);
-      animation: pulse 2.5s infinite ease-in-out;
-    }
-
-    .icon-wrapper svg {
-      width: 44px;
-      height: 44px;
-      fill: var(--primary-purple);
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.14);
+      font-size: 48px;
     }
 
     h1 {
-      color: var(--text-dark);
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      margin-bottom: 12px;
+      margin: 0 0 14px;
+      font-size: clamp(2.2rem, 8vw, 3.4rem);
+      letter-spacing: 0.08em;
     }
 
-    p.description {
-      color: var(--text-muted);
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 32px;
+    .description {
+      margin: 0 auto 30px;
+      max-width: 440px;
+      color: #eee7fa;
+      font-size: 1.05rem;
+      line-height: 1.7;
     }
 
-    .btn-container {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
+    .buttons {
+      display: grid;
+      gap: 14px;
     }
 
-    .btn {
+    .button {
       position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 16px 24px;
-      background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
-      color: #ffffff;
-      font-weight: 700;
-      font-size: 16px;
-      letter-spacing: 0.5px;
-      text-decoration: none;
-      border-radius: 14px;
-      box-shadow: 0 4px 15px var(--accent-glow);
       overflow: hidden;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: block;
+      padding: 17px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 15px;
+      color: #fff;
+      background: linear-gradient(100deg, #a855f7, #7c3aed, #6d28d9);
+      background-size: 200% 200%;
+      box-shadow: 0 10px 26px rgba(109, 40, 217, 0.35);
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 180ms ease, box-shadow 180ms ease;
+      animation: brillo 5s ease infinite;
     }
 
-    /* Efecto de brillo que cruza el botón */
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        120deg,
-        transparent,
-        rgba(255, 255, 255, 0.35),
-        transparent
-      );
-      transition: all 0.6s ease;
+    .button:hover {
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: 0 15px 32px rgba(168, 85, 247, 0.45);
     }
 
-    /* Animación al interactuar / pasar el mouse */
-    .btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5);
+    .button:active {
+      transform: scale(0.98);
     }
 
-    .btn:hover::before {
-      left: 100%;
+    .button:focus-visible {
+      outline: 3px solid #fff;
+      outline-offset: 4px;
     }
 
-    .btn:active {
-      transform: translateY(-1px) scale(0.99);
+    footer {
+      margin-top: 26px;
+      color: #d8c9ef;
+      font-size: 0.85rem;
     }
 
-    /* Animación suave flotante continua para destacar los botones */
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
+    @keyframes brillo {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
-    .btn-pulse {
-      animation: float 3s ease-in-out infinite;
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-
-    .footer-note {
-      margin-top: 24px;
-      font-size: 12px;
-      color: var(--text-muted);
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
     }
   </style>
 </head>
-<body>
 
-  <div class="container">
-    <!-- Icono Ilustrativo (Mano con Dinero / Solicitud) -->
-    <div class="icon-wrapper">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M12 2a10 10 0 1 0 10 10 A10 10 0 0 0 12 2zm1 14.93V18e-01h-2v-1.07A3 3 0 0 1 9 14h2a1 1 0 0 0 2 0 1 1 0 0 0-1-1h-2a3 3 0 0 1 0-6V6h2v1.07A3 3 0 0 1 15 10h-2a1 1 0 0 0-2 0 1 1 0 0 0 1 1h2a3 3 0 0 1 0 5.93z"/>
-      </svg>
-    </div>
+<body>
+  <main class="card">
+    <div class="logo" aria-hidden="true">💸</div>
 
     <h1>CRÉDITOS</h1>
-    
+
     <p class="description">
-      Solicita tu crédito <strong>sin ningún tipo de inicial o anticipado</strong>. Haz clic en la opción que prefieras, marca la cantidad que deseas y sigue los pasos en pantalla. ¡Mucho éxito!
+      Consulta las opciones disponibles y sigue las instrucciones del servicio
+      para conocer sus condiciones antes de solicitar.
     </p>
 
-    <!-- Enlaces con movimiento y efectos -->
-    <div class="btn-container">
-      <!-- REEMPLAZA EL ENLACE POR EL TUYO -->
-      <a href="https://TU-LINK-AQUI-1.com" class="btn btn-pulse" target="_blank" rel="noopener noreferrer">
+    <nav class="buttons" aria-label="Opciones para solicitar">
+      <!-- Cambia cada URL por tu enlace -->
+      <a class="button" href="https://ejemplo.com/enlace-1"
+         target="_blank" rel="noopener noreferrer">
         SOLICITAR #1
       </a>
 
-      <!-- REEMPLAZA EL ENLACE POR EL TUYO -->
-      <a href="https://TU-LINK-AQUI-2.com" class="btn" target="_blank" rel="noopener noreferrer">
+      <a class="button" href="https://ejemplo.com/enlace-2"
+         target="_blank" rel="noopener noreferrer">
         SOLICITAR #2
       </a>
-    </div>
+    </nav>
 
-    <div class="footer-note">
-      🔒 Proceso 100% seguro y sin pagos previos.
-    </div>
-  </div>
-
+    <footer>
+      Revisa las condiciones, tasas y requisitos del proveedor antes de solicitar.
+    </footer>
+  </main>
 </body>
 </html>
+```
