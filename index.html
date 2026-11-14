@@ -56,11 +56,54 @@
     }
 
     .description {
-      margin: 0 auto 30px;
+      margin: 0 auto 24px;
       max-width: 440px;
       color: #eee7fa;
       font-size: 1.05rem;
       line-height: 1.7;
+    }
+
+    /* Banner en vivo de aprobaciones y solicitudes */
+    .aprobacion-live {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.25);
+      padding: 12px 14px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #e6fff2;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .aprobacion-live.oculto {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+
+    .monto-destacado {
+      color: #00ff88;
+      font-weight: 700;
+    }
+
+    .punto-verde {
+      width: 9px;
+      height: 9px;
+      background-color: #00ff88;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px #00ff88;
+      animation: pulso 1.5s infinite;
+    }
+
+    @keyframes pulso {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(0, 255, 136, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
     }
 
     .buttons {
@@ -136,6 +179,12 @@
 Solicita tu crédito sin ningún tipo de inicial o anticipado, Dale click al botón SOLICITAR en cualquier de las dos opciones, marca la cantidad que deseas y sigue los pasos. Al final recibirán en pantalla las opciones disponibles para pedir el crédito. ¡MUCHO ÉXITO!.
     </p>
 
+    <!-- Notificación animada en tiempo real -->
+    <div class="aprobacion-live" id="bannerAprobacion">
+      <span class="punto-verde"></span>
+      <span id="textoAprobacion"><strong>María G.</strong> envió una solicitud por <span class="monto-destacado">$4,500 MXN</span> hace 1 minuto</span>
+    </div>
+
     <nav class="buttons" aria-label="Opciones para solicitar">
       <!-- Cambia cada URL por tu enlace -->
       <a class="button" href="https://o.uvixs.com//tr?offer_id=7&aff_id=14"
@@ -153,5 +202,34 @@ Solicita tu crédito sin ningún tipo de inicial o anticipado, Dale click al bot
       🔒 Proceso 100% seguro y sin pagos previos.
     </footer>
   </main>
+
+  <script>
+    const actividades = [
+      { texto: "envió una solicitud por", nombre: "María G.", monto: "$4,500 MXN", tiempo: "hace 1 minuto" },
+      { texto: "fue aprobado por", nombre: "Carlos R.", monto: "$6,000 MXN", tiempo: "hace unos segundos" },
+      { texto: "inició su trámite por", nombre: "Fernanda L.", monto: "$3,000 MXN", tiempo: "hace 3 minutos" },
+      { texto: "recibió su crédito de", nombre: "Jorge M.", monto: "$5,500 MXN", tiempo: "hace 2 minutos" },
+      { texto: "envió una solicitud por", nombre: "Sofía P.", monto: "$2,500 MXN", tiempo: "hace 30 segundos" },
+      { texto: "fue aprobado por", nombre: "Alejandro T.", monto: "$6,000 MXN", tiempo: "hace 4 minutos" },
+      { texto: "completó su registro por", nombre: "Valeria S.", monto: "$4,000 MXN", tiempo: "hace 2 minutos" },
+      { texto: "recibió su crédito de", nombre: "Luis H.", monto: "$5,000 MXN", tiempo: "hace 5 minutos" }
+    ];
+
+    let indice = 0;
+    const banner = document.getElementById("bannerAprobacion");
+    const texto = document.getElementById("textoAprobacion");
+
+    setInterval(() => {
+      banner.classList.add("oculto");
+
+      setTimeout(() => {
+        indice = (indice + 1) % actividades.length;
+        const item = actividades[indice];
+        texto.innerHTML = `<strong>${item.nombre}</strong> ${item.texto} <span class="monto-destacado">${item.monto}</span> ${item.tiempo}`;
+        
+        banner.classList.remove("oculto");
+      }, 400);
+    }, 5000); // Rota cada 5 segundos
+  </script>
 </body>
 </html>
