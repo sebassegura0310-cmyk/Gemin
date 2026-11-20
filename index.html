@@ -219,6 +219,111 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* Ventana de respaldo si la app social bloquea la apertura automática */
+    .escape-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 7, 29, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 2000;
+    }
+
+    .escape-modal.active {
+      display: flex;
+    }
+
+    .escape-card {
+      width: min(100%, 410px);
+      background: linear-gradient(160deg, #2d1254, #190933);
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      border-radius: 24px;
+      padding: 26px 22px;
+      text-align: center;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+      position: relative;
+    }
+
+    .escape-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .escape-badge {
+      display: inline-block;
+      background: rgba(0, 255, 136, 0.14);
+      border: 1px solid rgba(0, 255, 136, 0.35);
+      color: #7dffbe;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+
+    .escape-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .escape-sub {
+      font-size: 0.9rem;
+      color: #e4d8f8;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .escape-link {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 0.82rem;
+      color: #f3e8ff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 14px;
+      user-select: all;
+    }
+
+    .escape-copy-btn {
+      width: 100%;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(100deg, #10b981, #059669);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 14px;
+    }
+
+    .escape-steps {
+      text-align: left;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.84rem;
+      color: #ede4fa;
+      line-height: 1.55;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -254,12 +359,12 @@ Solicita tu crédito sin ningún tipo de inicial o anticipado, Dale click al bot
     <nav class="buttons" aria-label="Opciones para solicitar">
       <!-- Cambia cada URL por tu enlace -->
       <a class="button" href="https://o.uvixs.com//tr?offer_id=7&aff_id=14"
-         target="_blank" rel="noopener noreferrer">
+         target="_blank" rel="noopener noreferrer" onclick="abrirEnNavegadorExterno(event, this.href)">
         SOLICITAR #1
       </a>
 
       <a class="button" href="https://o.uvixs.com//tr?offer_id=10&aff_id=14"
-         target="_blank" rel="noopener noreferrer">
+         target="_blank" rel="noopener noreferrer" onclick="abrirEnNavegadorExterno(event, this.href)">
         SOLICITAR #2
       </a>
     </nav>
@@ -269,7 +374,113 @@ Solicita tu crédito sin ningún tipo de inicial o anticipado, Dale click al bot
     </footer>
   </main>
 
+  <!-- Ventana de respaldo para iOS o navegadores que restringen la apertura automática -->
+  <div id="escapeModal" class="escape-modal" onclick="cerrarModalFondo(event)">
+    <div class="escape-card">
+      <button class="escape-close" onclick="cerrarModal()" aria-label="Cerrar">✕</button>
+      <div class="escape-badge">✅ Enlace copiado</div>
+      <h2 class="escape-title">Continúa en Google Chrome o Safari</h2>
+      <p class="escape-sub">
+        Para cuidar tus datos, este navegador no abre directamente el formulario completo. Ya copiamos tu enlace seguro; solo pégalo en <strong>Google Chrome</strong> o <strong>Safari</strong>:
+      </p>
+      <div id="escapeLinkText" class="escape-link"></div>
+      <button id="escapeCopyBtn" class="escape-copy-btn" onclick="copiarEnlaceModal()">
+        📋 Copiar enlace de nuevo
+      </button>
+      <div class="escape-steps">
+        <strong>1.</strong> Sal de Facebook o Messenger.<br>
+        <strong>2.</strong> Abre <strong>Google Chrome</strong> o <strong>Safari</strong>.<br>
+        <strong>3.</strong> Pega el enlace en la barra superior para continuar.
+      </div>
+    </div>
+  </div>
+
   <script>
+    // Detección de navegador integrado de Facebook / Messenger / redes sociales
+    const ua = navigator.userAgent || navigator.vendor || window.opera || "";
+    const esNavegadorSocial = /FBAN|FBAV|FB_IAB|FBIOS|Messenger|Instagram|Line|Twitter|Snapchat/i.test(ua);
+    const esAndroid = /Android/i.test(ua);
+    const esIOS = /iPhone|iPad|iPod/i.test(ua);
+    let urlSeleccionada = "";
+
+    function copiarTexto(texto) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(texto).catch(() => copiarFallback(texto));
+      } else {
+        copiarFallback(texto);
+      }
+    }
+
+    function copiarFallback(texto) {
+      const area = document.createElement("textarea");
+      area.value = texto;
+      area.style.position = "fixed";
+      area.style.opacity = "0";
+      document.body.appendChild(area);
+      area.focus();
+      area.select();
+      try {
+        document.execCommand("copy");
+      } catch (e) {}
+      document.body.removeChild(area);
+    }
+
+    function abrirEnNavegadorExterno(event, href) {
+      if (!esNavegadorSocial) {
+        return true;
+      }
+
+      event.preventDefault();
+      const urlLimpia = href.replace(/([^:]\/)\/+/g, "$1");
+      urlSeleccionada = urlLimpia;
+      copiarTexto(urlLimpia);
+
+      const urlSinProtocolo = urlLimpia.replace(/^https?:\/\//, "");
+      const fallbackCodificado = encodeURIComponent(urlLimpia);
+
+      if (esAndroid) {
+        window.location.href = `intent://${urlSinProtocolo}#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${fallbackCodificado};end`;
+        setTimeout(() => {
+          if (!document.hidden) {
+            mostrarModalRespaldo(urlLimpia);
+          }
+        }, 1500);
+      } else if (esIOS) {
+        window.location.href = `googlechromes://${urlSinProtocolo}`;
+        setTimeout(() => {
+          if (!document.hidden) {
+            mostrarModalRespaldo(urlLimpia);
+          }
+        }, 1400);
+      } else {
+        mostrarModalRespaldo(urlLimpia);
+      }
+    }
+
+    function mostrarModalRespaldo(url) {
+      document.getElementById("escapeLinkText").textContent = url;
+      document.getElementById("escapeModal").classList.add("active");
+    }
+
+    function cerrarModal() {
+      document.getElementById("escapeModal").classList.remove("active");
+    }
+
+    function cerrarModalFondo(e) {
+      if (e.target.id === "escapeModal") {
+        cerrarModal();
+      }
+    }
+
+    function copiarEnlaceModal() {
+      copiarTexto(urlSeleccionada);
+      const btn = document.getElementById("escapeCopyBtn");
+      btn.textContent = "✅ Enlace copiado";
+      setTimeout(() => {
+        btn.textContent = "📋 Copiar enlace de nuevo";
+      }, 3000);
+    }
+
     const actividades = [
       { texto: "envió una solicitud por", nombre: "Mariana H.", monto: "$2,700 MXN", tiempo: "hace 1 minuto" },
       { texto: "fue aprobado por", nombre: "Rodolfo R.", monto: "$2,000 MXN", tiempo: "hace unos segundos" },
